@@ -1,13 +1,25 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		
+		<!-- NuGet Package Metadata -->
+		<PackageId>TM.Common.EntityFrameworkCore</PackageId>
+		<Version>1.0.0</Version>
+		<Title>TM Common.EntityFrameworkCore</Title>
+		<Description>A collection of common models and base entities for TM applications</Description>
+		<Authors>Kenneth Napura</Authors>
+		<PackageProjectUrl>https://github.com/kenjie-sama/TM.Common.Models/tree/master/TM.Common.EntityFrameworkCore</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/kenjie-sama/TM.Common.Models</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.14" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.14" />
+	</ItemGroup>
 
 </Project>

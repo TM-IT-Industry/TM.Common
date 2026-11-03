@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/Builds/" />
+  <Folder Name="/Builds/TM.Common.Models.EntityFrameworkCore/" />
+  <Folder Name="/Builds/TM.Common.Models/" />
   <Folder Name="/Sources/">
     <Project Path="TM.Common.EntityFrameworkCore/TM.Common.Models.EntityFrameworkCore.csproj" />
     <Project Path="TM.Common.Models/TM.Common.Models.csproj" Id="633ba8a8-3982-4056-bf52-e5730770a80d" />
