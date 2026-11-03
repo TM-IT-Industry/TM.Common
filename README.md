@@ -9,4 +9,9 @@ This project is available as a NuGet package:
 # BUILD PACKAGE
 dotnet build -c Release
 
-dotnet nuget push "bin\Release\TM.Common.Models.1.0.0.nupkg" --api-key <YOUR_API_KEY> --source https://api.nuget.org/v3/index.json
+
+cmd
+dotnet nuget push "C:\Users\Ken Napura\source\repos\TM.Common.Models\TM.Common.EntityFrameworkCore\bin\Release\TM.Common.EntityFrameworkCore.1.0.0.nupkg" --api-key %Nuget_APIKey% --source https://api.nuget.org/v3/index.json
+
+powershell
+dotnet nuget push "C:\Users\Ken Napura\source\repos\TM.Common.Models\TM.Common.EntityFrameworkCore\bin\Release\TM.Common.EntityFrameworkCore.1.0.0.nupkg" --api-key $env:Nuget_APIKey --source https://nuget.org
