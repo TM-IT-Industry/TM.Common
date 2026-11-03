@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TM.Common.EntityFrameworkCore.Enums;
+using TM.Common.Models.EntityFrameworkCore.Enums;
 
-namespace TM.Common.Models.DataAccessObjects
+namespace TM.Common.Models.EntityFrameworkCore.DataAccessObjects
 {
     internal record Entity<TEntity> where TEntity : class
     {
