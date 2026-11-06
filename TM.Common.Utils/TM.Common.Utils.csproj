@@ -1,9 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		
+		<!-- NuGet Package Metadata -->
+		<PackageId>TM.Common.Utils</PackageId>
+		<Version>1.0.0</Version>
+		<Title>TM Common.Utils</Title>
+		<Description>A collection of common utilities for TM applications</Description>
+		<Authors>Kenneth Napura</Authors>
+		<PackageProjectUrl>https://github.com/kenjie-sama/TM.Common/tree/master/TM.Common.Utils</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/kenjie-sama/TM.Common</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	</PropertyGroup>
 
 </Project>
