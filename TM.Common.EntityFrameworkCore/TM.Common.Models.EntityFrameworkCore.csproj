@@ -7,12 +7,12 @@
 		
 		<!-- NuGet Package Metadata -->
 		<PackageId>TM.Common.EntityFrameworkCore</PackageId>
-		<Version>1.0.0</Version>
+		<Version>1.0.1</Version>
 		<Title>TM Common.EntityFrameworkCore</Title>
-		<Description>A collection of common models and base entities for TM applications</Description>
+		<Description>A collection of common entity framework core models, methods and base entities for TM applications</Description>
 		<Authors>Kenneth Napura</Authors>
-		<PackageProjectUrl>https://github.com/kenjie-sama/TM.Common.Models/tree/master/TM.Common.EntityFrameworkCore</PackageProjectUrl>
-		<RepositoryUrl>https://github.com/kenjie-sama/TM.Common.Models</RepositoryUrl>
+		<PackageProjectUrl>https://github.com/kenjie-sama/TM.Common/tree/master/TM.Common.EntityFrameworkCore</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/kenjie-sama/TM.Common</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
