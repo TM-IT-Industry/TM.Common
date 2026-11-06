@@ -5,5 +5,6 @@
   <Folder Name="/Sources/">
     <Project Path="TM.Common.EntityFrameworkCore/TM.Common.Models.EntityFrameworkCore.csproj" />
     <Project Path="TM.Common.Models/TM.Common.Models.csproj" Id="633ba8a8-3982-4056-bf52-e5730770a80d" />
+    <Project Path="TM.Common.Utils/TM.Common.Utils.csproj" Id="693f8cee-4de4-42f5-a100-901acec67235" />
   </Folder>
 </Solution>
