@@ -3,11 +3,18 @@
   <Folder Name="/Builds/TM.Common.Models.EntityFrameworkCore/" />
   <Folder Name="/Builds/TM.Common.Models/" />
   <Folder Name="/Items/">
+    <File Path=".gitattributes" />
+    <File Path=".github/workflows/gitdeploy.yml" />
+    <File Path=".gitignore" />
+    <File Path="LICENSE.txt" />
     <File Path="README.md" />
   </Folder>
   <Folder Name="/Sources/">
     <Project Path="TM.Common.EntityFrameworkCore/TM.Common.Models.EntityFrameworkCore.csproj" />
     <Project Path="TM.Common.Models/TM.Common.Models.csproj" Id="633ba8a8-3982-4056-bf52-e5730770a80d" />
     <Project Path="TM.Common.Utils/TM.Common.Utils.csproj" Id="693f8cee-4de4-42f5-a100-901acec67235" />
+  </Folder>
+  <Folder Name="/Tests/">
+    <Project Path="TM.Common.Tests/TM.Common.Tests.csproj" Id="f86cf087-d8d1-4fb2-99c0-283b4e33001c" />
   </Folder>
 </Solution>
