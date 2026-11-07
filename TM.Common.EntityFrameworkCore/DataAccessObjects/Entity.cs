@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TM.Common.Models.EntityFrameworkCore.Enums;
+using TM.Common.Constants.Enums;
 
 namespace TM.Common.Models.EntityFrameworkCore.DataAccessObjects
 {

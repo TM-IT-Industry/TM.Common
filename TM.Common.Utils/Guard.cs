@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace TM.Common.Utils
+﻿namespace TM.Common.Utils
 {
     public sealed class Guard
     {

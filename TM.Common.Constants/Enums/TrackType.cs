@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace TM.Common.Models.EntityFrameworkCore.Enums
+namespace TM.Common.Constants.Enums
 {
     public enum TrackType
     {

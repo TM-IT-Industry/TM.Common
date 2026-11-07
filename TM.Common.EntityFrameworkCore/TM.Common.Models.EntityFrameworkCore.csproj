@@ -22,4 +22,8 @@
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.14" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\TM.Common.Constants\TM.Common.Constants.csproj" />
+	</ItemGroup>
+
 </Project>
