@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace TM.Common.Utils
+﻿namespace TM.Common.Utils
 {
     public static class Security
     {
@@ -27,7 +23,7 @@ namespace TM.Common.Utils
 
             byte[] bytes = new byte[hex.Length / 2];
             for (int i = 0; i < hex.Length; i += 2)
-                bytes[i / 2] = Convert.ToByte(hex.Substring(i, 2), 16);
+                bytes[i / 2] = System.Convert.ToByte(hex.Substring(i, 2), 16);
 
             return bytes;
         }
