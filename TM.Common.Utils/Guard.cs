@@ -12,10 +12,16 @@ namespace TM.Common.Utils
                 throw new ArgumentNullException(message);
         }
 
-        public static void AgainstNullOrEmpty(string value, string parameterName)
+        public static void AgainstNullOrEmpty(string value, string referenceName)
         {
             if (string.IsNullOrWhiteSpace(value))
-                throw new ArgumentException($"Parameter '{parameterName}' cannot be null or empty.", parameterName);
+                throw new NullReferenceException($"Reference '{referenceName}' cannot be null or empty.");
+        }
+
+        public static void ThrowInvalidOperationIf(bool condition, string message)
+        {
+            if (condition)
+                throw new InvalidOperationException(message);
         }
     }
 }
