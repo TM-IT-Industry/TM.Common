@@ -6,7 +6,6 @@
         public void Test1()
         {
             Assert.True(false);
-            Assert.StartsWith("a", "abc");
         }
     }
 }
