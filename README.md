@@ -11,7 +11,7 @@ This project is available as a NuGet package:
 > `dotnet build -c Release`
 
 - then export as NuGet package
-> `dotnet pack -c Release -o ./packages`
+> `dotnet pack -c Release -o ./Builds`
 
 
 # BUILD PACKAGE IN NUGET.ORG

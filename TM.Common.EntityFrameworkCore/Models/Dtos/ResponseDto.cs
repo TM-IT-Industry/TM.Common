@@ -1,4 +1,4 @@
-﻿namespace TM.Common.Models.EntityFrameworkCore.Dtos
+﻿namespace TM.Common.EntityFrameworkCore.Models.Dtos
 {
     public class ResponseDto
     {

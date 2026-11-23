@@ -7,8 +7,9 @@
 
 		<!-- NuGet Package Metadata -->
 		<PackageId>TM.Common.Constants</PackageId>
-		<Version>1.0.0</Version>
-		<Title>TM Common.Cons</Title>
+		<Version>1.0.10</Version>
+		<VersionSuffix>alpha</VersionSuffix>
+		<Title>TM Common.Constants</Title>
 		<Description>A collection of common constants and static details for TM applications</Description>
 		<Authors>Kenneth Napura</Authors>
 		<PackageProjectUrl>https://github.com/kenjie-sama/TM.Common/tree/master/TM.Common.Utils</PackageProjectUrl>
