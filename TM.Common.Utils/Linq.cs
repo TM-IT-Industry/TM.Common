@@ -1,74 +1,108 @@
-﻿using TM.Common.Utils.Constants.Enums;
-
+﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
-namespace TM.Common.Utils
+
+namespace TM.Common.Utils;
+
+public static class LinqExtensions
 {
-    public union SourceType<TEntity>(IQueryable<TEntity>, IEnumerable<TEntity>);
-
-    public static class Linq
+    /// <summary>
+    /// Returns elements from <paramref name="source"/> whose selected keys
+    /// are not present in <paramref name="existing"/>.
+    /// </summary>
+    /// <remarks>
+    /// The result preserves the order and duplicates of
+    /// <paramref name="source"/>.
+    /// </remarks>
+    public static IEnumerable<TEntity> ExceptByKey<TEntity, TKey>(
+        this IEnumerable<TEntity> source,
+        IEnumerable<TEntity> existing,
+        Func<TEntity, TKey> keySelector,
+        IEqualityComparer<TKey>? comparer = null)
     {
-        public static IEnumerable<TEntity> TakeUnmatchData<TEntity, TKey>(
-            IEnumerable<TEntity> leftSource, 
-            IEnumerable<TEntity> rightSource, 
-            Func<TEntity, TKey> keySelector,
-            SourceType sourceType = SourceType.Left) 
-            where TEntity : class
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(existing);
+        ArgumentNullException.ThrowIfNull(keySelector);
+
+        var existingKeys = existing
+            .Select(keySelector)
+            .ToHashSet(comparer);
+
+        return source.Where(item => !existingKeys.Contains(keySelector(item)));
+    }
+
+    /// <summary>
+    /// Asynchronously returns candidates whose selected keys are not present
+    /// in the existing database query.
+    /// </summary>
+    /// <remarks>
+    /// Candidate order and duplicates are preserved.
+    ///
+    /// Existing keys are retrieved in batches to avoid executing one query
+    /// per candidate and to prevent excessively large SQL IN clauses.
+    /// </remarks>
+    public static async Task<IReadOnlyList<TEntity>> ExceptByKeyAsync<TEntity, TKey>(
+        this IEnumerable<TEntity> candidates,
+        IQueryable<TEntity> existing,
+        Expression<Func<TEntity, TKey>> keySelector,
+        int batchSize = 1_000,
+        IEqualityComparer<TKey>? comparer = null,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(candidates);
+        ArgumentNullException.ThrowIfNull(existing);
+        ArgumentNullException.ThrowIfNull(keySelector);
+
+        ArgumentOutOfRangeException.ThrowIfLessThan(batchSize, 1);
+
+        var items = candidates as TEntity[] ?? candidates.ToArray();
+
+        if (items.Length == 0)
         {
-            var source = sourceType is SourceType.Left ? leftSource : rightSource;
-            var target = sourceType is SourceType.Left ? rightSource : leftSource;
-
-            var excludedKeys = new HashSet<TKey>(target.Select(keySelector));
-
-            return source.Where(a => !excludedKeys.Contains(keySelector(a)));
+            return Array.Empty<TEntity>();
         }
 
-        /// <summary>
-        /// Use only in c# 15 or latest
-        /// Returns entities from the selected source whose keys do not appear in the other source.
-        /// </summary>
-        /// <typeparam name="TEntity">The type of the entities in the source collections.</typeparam>
-        /// <typeparam name="TKey">The type of the keys used to compare entities.</typeparam>
-        /// <param name="leftSource">The left source of entities.</param>
-        /// <param name="rightSource">The right source of entities.</param>
-        /// <param name="keySelector">A function that selects a comparison key from an entity.</param>
-        /// <param name="sourceType">The source to select unmatched entities from. Defaults to the left source.</param>
-        /// <returns>A task representing the asynchronous operation. The task result contains entities from the selected source
-        /// whose keys are absent from the other source.</returns>
-        public static async Task<IList<TEntity>> TakeUnmatchDataAsync<TEntity, TKey>(
-            SourceType<TEntity> leftSource,
-            SourceType<TEntity> rightSource,
-            Func<TEntity, TKey> keySelector,
-            SourceType sourceType = SourceType.Left)
-            where TEntity : class
-        {
-            var source = sourceType is SourceType.Left ? leftSource : rightSource;
-            var target = sourceType is SourceType.Left ? rightSource : leftSource;
-            var excludedKeys = await GetExcludedKeys(target, keySelector);
+        var getKey = keySelector.Compile();
 
-            return await FilterSource(source, excludedKeys, keySelector);
+        var candidateKeys = items
+            .Select(getKey)
+            .Distinct(comparer)
+            .ToArray();
+
+        var existingKeys = new HashSet<TKey>(comparer);
+
+        foreach (var keyBatch in candidateKeys.Chunk(batchSize))
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            var predicate = BuildContainsPredicate(
+                keySelector,
+                keyBatch);
+
+            var matchedKeys = await existing
+                .Where(predicate)
+                .Select(keySelector)
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
+
+            existingKeys.UnionWith(matchedKeys);
         }
 
-        private static async Task<IList<TEntity>> FilterSource<TEntity, TKey>(
-            SourceType<TEntity> sourceType, 
-            HashSet<TKey> excludedKeys,
-            Func<TEntity, TKey> keySelector)
-        {
-            return sourceType switch
-            {
-                IQueryable<TEntity> queryable => await queryable.Where(a => !excludedKeys.Contains(keySelector(a))).ToListAsync(),
-                IEnumerable<TEntity> enumerable => await Task.FromResult(enumerable.Where(a => !excludedKeys.Contains(keySelector(a))).ToList()),
-                _ => throw new ArgumentOutOfRangeException(nameof(sourceType))
-            };
-        }
+        return items
+            .Where(item => !existingKeys.Contains(getKey(item)))
+            .ToList();
+    }
 
-        private static async Task<HashSet<TKey>> GetExcludedKeys<TEntity, TKey>(SourceType<TEntity> targetSourceType, Func<TEntity, TKey> keySelector)
-        {
-            return targetSourceType switch
-            {
-                IQueryable<TEntity> queryable => await Task.FromResult(queryable.Select(keySelector).ToHashSet<TKey>()),
-                IEnumerable<TEntity> enumerable => await Task.FromResult(enumerable.Select(keySelector).ToHashSet<TKey>()),
-                _ => throw new InvalidCastException("Target Source Type is unsupported for processing of excluded keys")
-            };
-        }
+    private static Expression<Func<TEntity, bool>> BuildContainsPredicate<TEntity, TKey>(Expression<Func<TEntity, TKey>> keySelector, TKey[] keys)
+    {
+        var containsExpression = Expression.Call(
+            typeof(Enumerable),
+            nameof(Enumerable.Contains),
+            [typeof(TKey)],
+            Expression.Constant(keys),
+            keySelector.Body);
+
+        return Expression.Lambda<Func<TEntity, bool>>(
+            containsExpression,
+            keySelector.Parameters);
     }
 }
