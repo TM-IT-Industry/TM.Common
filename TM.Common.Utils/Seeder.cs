@@ -56,7 +56,7 @@ namespace Authentication.Common.Utils
             var unmatchData = data.ExceptByKey(existings, _keySelector);
             if (!unmatchData.Any()) return;
 
-            dbContext.AddRange(unmatchData, CancellationToken.None);
+            dbContext.AddRange(unmatchData);
         }
 
         /// <summary>
