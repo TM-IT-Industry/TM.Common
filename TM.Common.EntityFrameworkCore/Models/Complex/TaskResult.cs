@@ -1,6 +1,6 @@
 ﻿using TM.Common.Constants.Enums;
 
-namespace TM.Common.Models.EntityFrameworkCore.Complex
+namespace TM.Common.EntityFrameworkCore.Models.Complex
 {
     /// <summary>
     /// Use this to represent the result of an operation, such as a repository action or a service method. 

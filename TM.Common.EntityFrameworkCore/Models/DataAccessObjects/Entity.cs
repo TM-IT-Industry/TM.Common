@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TM.Common.Constants.Enums;
 
-namespace TM.Common.Models.EntityFrameworkCore.DataAccessObjects
+namespace TM.Common.EntityFrameworkCore.Models.DataAccessObjects
 {
     /// <summary>
     /// Provides access to an entity's DbSet and preconfigured no-tracking query source.
