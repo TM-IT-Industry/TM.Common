@@ -14,11 +14,11 @@ public class LinqTest
 
         Assert.Equal(
             new[] { "A" },
-            Linq.TakeUnmatchData(left, right, x => x.Code).Select(x => x.Code));
+            left.ExceptByKey(right, x => x.Code).Select(x => x.Code));
 
         Assert.Equal(
             new[] { "C" },
-            Linq.TakeUnmatchData(left, right, x => x.Code, SourceType.Right)
+            left.ExceptByKey(right, x => x.Code)
                 .Select(x => x.Code));
     }
 
@@ -42,8 +42,7 @@ public class LinqTest
             new Row { Code = "B" }
         };
 
-        var result = await Linq.TakeUnmatchDataAsync(
-            candidates, db.Rows, row => row.Code);
+        var result = await candidates.ExceptByKeyAsync(db.Rows, row => row.Code);
 
         Assert.Equal(new[] { "B" }, result.Select(row => row.Code));
     }
