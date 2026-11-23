@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
-using TM.Common.Utils;
-namespace Authentication.Common.Utils
+namespace TM.Common.Utils
 {
     /// <summary>
     /// Provides a base implementation for seeding data into the database.
