@@ -18,7 +18,7 @@ public class LinqTest
 
         Assert.Equal(
             new[] { "C" },
-            left.ExceptByKey(right, x => x.Code)
+            right.ExceptByKey(left, x => x.Code)
                 .Select(x => x.Code));
     }
 
