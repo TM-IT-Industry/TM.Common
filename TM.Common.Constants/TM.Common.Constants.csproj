@@ -7,7 +7,7 @@
 
 		<!-- NuGet Package Metadata -->
 		<PackageId>TM.Common.Constants</PackageId>
-		<Version>1.0.10</Version>
+		<Version>1.0.1</Version>
 		<VersionSuffix>alpha</VersionSuffix>
 		<Title>TM Common.Constants</Title>
 		<Description>A collection of common constants and static details for TM applications</Description>
