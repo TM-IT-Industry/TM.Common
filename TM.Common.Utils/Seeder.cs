@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using TM.Common.Utils.Interfaces;
 namespace TM.Common.Utils
 {
     /// <summary>
@@ -8,7 +9,8 @@ namespace TM.Common.Utils
     /// <typeparam name="TDbContext">Database Context</typeparam>
     /// <typeparam name="TEntity">Entity or Table Type</typeparam>
     /// <typeparam name="TKey">Key Selector Type</typeparam>
-    public abstract class Seeder<TDbContext, TEntity, TKey> 
+    public abstract class Seeder<TDbContext, TEntity, TKey>
+        : ISeeder
         where TDbContext : DbContext
         where TEntity : class
     {
@@ -68,6 +70,19 @@ namespace TM.Common.Utils
             if (!unmatchData.Any()) return;
 
             await dbContext.AddRangeAsync(unmatchData, cancellationToken);
+        }
+
+        public virtual void Run(CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            Seed();
+            dbContext.SaveChanges();
+        }
+
+        public virtual async Task RunAsync(CancellationToken cancellationToken)
+        {
+            await SeedAsync(cancellationToken);
+            await dbContext.SaveChangesAsync(cancellationToken);
         }
     }
 }
