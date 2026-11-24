@@ -18,8 +18,8 @@ namespace TM.Common.Utils
         private readonly Expression<Func<TEntity, TKey>> keySelector;
         private readonly TDbContext dbContext;
         private readonly IQueryable<TEntity> existings;
-        private readonly Action<TDbContext>? callBack;
-        private readonly Func<TDbContext, Task>? callBackAsync;
+        private readonly Action<IEnumerable<TEntity>>? callBack;
+        private readonly Func<IReadOnlyList<TEntity>, Task>? callBackAsync;
 
         /// <summary>
         /// Initializes a new seeder with the entities to seed, database context, and key selector.
@@ -42,8 +42,8 @@ namespace TM.Common.Utils
             IEnumerable<TEntity> data, 
             TDbContext dbContext, 
             Expression<Func<TEntity, TKey>> keySelector,
-            Action<TDbContext>? callBack = null,
-            Func<TDbContext, Task>? callBackAsync = null)
+            Action<IEnumerable<TEntity>>? callBack = null,
+            Func<IReadOnlyList<TEntity>, Task>? callBackAsync = null)
         {
             Guard.AgainstNull(data, "Seeder data is Empty");
             Guard.AgainstNull(dbContext, "Seeder Database Context is Empty");
@@ -69,7 +69,7 @@ namespace TM.Common.Utils
 
             if (callBack is not null)
             {
-                callBack.Invoke(dbContext);
+                callBack.Invoke(unmatchData);
                 return;
             }
 
@@ -87,7 +87,7 @@ namespace TM.Common.Utils
 
             if (callBackAsync is not null)
             {
-                await callBackAsync.Invoke(dbContext);
+                await callBackAsync.Invoke(unmatchData);
                 return;
             }
 
