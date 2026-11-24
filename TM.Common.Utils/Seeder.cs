@@ -18,6 +18,8 @@ namespace TM.Common.Utils
         private readonly Expression<Func<TEntity, TKey>> keySelector;
         private readonly TDbContext dbContext;
         private readonly IQueryable<TEntity> existings;
+        private readonly Action<TDbContext>? callBack;
+        private readonly Func<TDbContext, Task>? callBackAsync;
 
         /// <summary>
         /// Initializes a new seeder with the entities to seed, database context, and key selector.
@@ -36,7 +38,12 @@ namespace TM.Common.Utils
         /// <param name="data">The rows / records to seed.</param>
         /// <param name="dbContext">The database context used to persist the entities.</param>
         /// <param name="keySelector">The function that identifies the key of an entity.</param>
-        protected Seeder(IEnumerable<TEntity> data, TDbContext dbContext, Expression<Func<TEntity, TKey>> keySelector)
+        protected Seeder(
+            IEnumerable<TEntity> data, 
+            TDbContext dbContext, 
+            Expression<Func<TEntity, TKey>> keySelector,
+            Action<TDbContext>? callBack = null,
+            Func<TDbContext, Task>? callBackAsync = null)
         {
             Guard.AgainstNull(data, "Seeder data is Empty");
             Guard.AgainstNull(dbContext, "Seeder Database Context is Empty");
@@ -45,6 +52,9 @@ namespace TM.Common.Utils
             this.data = data.ToArray();
             this.dbContext = dbContext;
             this.keySelector = keySelector;
+            this.callBack = callBack;
+            this.callBackAsync = callBackAsync;
+
             existings = dbContext.Set<TEntity>();
         }
 
@@ -57,6 +67,12 @@ namespace TM.Common.Utils
             var unmatchData = data.ExceptByKey(existings, _keySelector);
             if (!unmatchData.Any()) return;
 
+            if (callBack is not null)
+            {
+                callBack.Invoke(dbContext);
+                return;
+            }
+
             dbContext.AddRange(unmatchData);
         }
 
@@ -68,6 +84,12 @@ namespace TM.Common.Utils
         {
             var unmatchData = await data.ExceptByKeyAsync(existings, keySelector, cancellationToken: cancellationToken);
             if (!unmatchData.Any()) return;
+
+            if (callBackAsync is not null)
+            {
+                await callBackAsync.Invoke(dbContext);
+                return;
+            }
 
             await dbContext.AddRangeAsync(unmatchData, cancellationToken);
         }
