@@ -7,7 +7,7 @@
 
 		<!-- NuGet Package Metadata -->
 		<PackageId>TM.Common.Models</PackageId>
-		<Version>1.0.10</Version>
+		<Version>1.0.1</Version>
 		<VersionSuffix>alpha</VersionSuffix>
 		<Title>TM Common Models</Title>
 		<Description>A collection of common models and base entities for TM applications</Description>
